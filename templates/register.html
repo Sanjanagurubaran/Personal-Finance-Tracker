@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      padding: 50px;
+    }
+
+    .form-box {
+      background: white;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #004080;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>Create Account</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul style="padding: 0; list-style: none;">
+      {% for category, message in messages %}
+<li {% if category == 'danger' %}style="color: red;" 
+    {% elif category == 'success' %}style="color: green;" 
+    {% elif category == 'warning' %}style="color: orange;" 
+    {% else %}style="color: black;" 
+    {% endif %}>
+    {{ message }}
+</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %} 
+
+    <form method="POST">
+      <input type="text" name="username" placeholder="Create a username" required />
+      <input type="password" name="password" placeholder="Create a password" required />
+      <button type="submit">Register</button>
+    </form>
+    <a href="/login">Already have an account? Login</a>
+  </div>
+</body>
+</html>

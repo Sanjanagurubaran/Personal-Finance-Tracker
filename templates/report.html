@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Style -->
+  <style>
+    body {
+      background-color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #004080;
+      gap:30px;
+      display: flex;
+      padding: 15px 30px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    input[type="date"] {
+      padding: 6px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 6px 12px;
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0b5ed7;
+    }
+
+    canvas {
+      max-width: 600px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="/setup">Setup Data</a>
+    <a href="/income">Income</a>
+    <a href="/expense">Expense</a>
+    <a href="/report">Report</a>
+    <a href="/logout">Logout</a>
+  </div>
+  <!-- Report Section -->
+  <div class="container">
+    <h1>Report for Income and Expense</h1>
+
+    <form method="POST" onsubmit="return validateForm()">
+      <label for="from_date">From:</label>
+      <input type="date" name="from_date" id="from_date">
+
+      <label for="to_date">To:</label>
+      <input type="date" name="to_date" id="to_date">
+
+      <label for="month_year">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select Month:</label>
+      <input type="month" name="month_year" id="month_year">
+
+
+      <button type="submit">Generate Report</button>
+    </form>
+
+    <h1>Income Report</h1>
+    <canvas id="incomeChart" width="600" height="400"></canvas>
+
+    <h1>Expense Report</h1>
+    <canvas id="expenseChart" width="600" height="=400"></canvas>
+  </div>
+
+  <!-- Chart Script -->
+  <script>
+    const incomeChart = new Chart(document.getElementById("incomeChart"), {
+      type: 'bar',
+      data: {
+        labels: {{ income_labels | tojson }},
+        datasets: [{
+          label: 'Income (₹)',
+          data: {{ income_values | tojson }},
+          backgroundColor: '#4CAF50'
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Income Report'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    const expenseChart = new Chart(document.getElementById("expenseChart"), {
+      type: 'bar',
+      data: {
+        labels: {{ expense_labels | tojson }},
+        datasets: [{
+          label: 'Expense (₹)',
+          data: {{ expense_values | tojson }},
+          backgroundColor: '#F44336'
+        }]
+      },
+      options: {
+      responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Expense Report'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  function validateForm() {
+    const from = document.getElementById('from_date').value;
+    const to = document.getElementById('to_date').value;
+    const month = document.getElementById('month_year').value;
+
+    // Require either date range or month
+    if ((from && to && !month) || (!from && !to && month)) {
+      return true; // valid
+    } else {
+      alert("Please either select a date range OR a month.");
+      return false; // stop submission
+    }
+  }
+
+
+
+  </script>
+
+</body>
+</html>
