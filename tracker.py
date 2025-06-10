@@ -7,7 +7,6 @@ from datetime import datetime
 from calendar import monthrange
 
 app = Flask(__name__)
-app.secret_key="Gvss972010@"
 
 def get_db():
     return mysql.connector.connect(
