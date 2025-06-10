@@ -13,8 +13,8 @@ def get_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Gvss972010@",  # your password here
-        database="financedb"
+        password=#password,
+        database=#database
     )
 
 @app.route('/')
